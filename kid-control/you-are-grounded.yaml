@@ -1,0 +1,20 @@
+---
+- name: Disable a childs computer account
+  hosts: kids-computer
+  vars:
+    # valid values are: yes or no
+    account_disabled: yes 
+
+  tasks:
+    - name: Disable account
+      win_user:
+        name: "{{ windows_username }}"
+        state: present 
+        account_disabled: "{{ account_disabled }}"
+      register: account_status
+
+    - debug:
+        var: account_status
+
+    - name: Reboot computer to force logoff
+      win_reboot:
